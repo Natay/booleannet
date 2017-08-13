@@ -147,5 +147,5 @@ if __name__ == '__main__':
     gen = all_initial_states(nodes)
 
     for data, func in gen:
-        print map(func, nodes)
+        print (map(func, nodes))
 

@@ -1,4 +1,5 @@
-import util
+
+from . import util
 import random
 from itertools import count
 
@@ -132,7 +133,7 @@ def test():
     model.iterate( steps = 5 )
     
     #for state in model.states:
-    #    print state
+    #    print (state)
 
     trans = TransGraph( logfile='states.txt' ) 
     trans.add( model.states )

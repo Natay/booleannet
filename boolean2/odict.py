@@ -5,7 +5,7 @@
 #
 # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/496761
 #
-from UserDict import DictMixin
+from collections import MutableMapping as DictMixin
 
 class odict(DictMixin):
     """

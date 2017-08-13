@@ -1,10 +1,11 @@
 
 import sys, os
 from itertools import *
+from collections import OrderedDict 
 
 from boolean2.boolmodel import BoolModel
-from boolean2 import util, odict, tokenizer
-import helper
+from boolean2 import util, tokenizer
+from . import helper
 
 try:
     import pylab
@@ -68,15 +69,16 @@ class PldeModel( BoolModel ):
         BoolModel.initialize( self, missing=missing, defaults=defaults )
         
         # will also maintain the order of insertion
-        self.mapper  = odict.odict() 
+        self.mapper  = OrderedDict() 
         self.indexer = {}
         
         # this will maintain the order of nodes
+	
         self.nodes = list(self.nodes)
         self.nodes.sort()
         for index, node in enumerate(self.nodes):
             triplet = self.first[node]
-            self.mapper [node] = ( index, node, triplet )
+            self.mapper[node] = ( index, node, triplet )
             self.indexer[node] = index
         
         # a sanity check
@@ -190,7 +192,7 @@ class PldeModel( BoolModel ):
             except OSError:
                 pass # must be a read only filesystem
             reload( autogen_mod )
-        except Exception, exc:
+        except Exception as exc:
             msg = "'%s' in:\n%s\n*** dynamic code error ***\n%s" % ( exc, self.dynamic_code, exc )
             util.error(msg)
 

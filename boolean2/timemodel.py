@@ -1,6 +1,5 @@
-import util
-import ruleparser
-from boolmodel import BoolModel
+from . import util, ruleparser
+from .boolmodel import BoolModel
 
 class TimeModel( BoolModel ):
 
@@ -70,8 +69,8 @@ if __name__ == '__main__':
     model.initialize(  )
     
     #for i in range(5):
-        #print model.next()
-    #    print model.shuffler()
+        #print (model.next())
+    #    print (model.shuffler())
 
     from itertools import count
 
@@ -82,4 +81,4 @@ if __name__ == '__main__':
         tstamp = 'T=%d ' % t
         data = [ tstamp ] + map(int, (state.A, state.B, state.C, state.D))
         data = map(str, data)
-        print '\t'.join(data)
+        print ('\t'.join(data))

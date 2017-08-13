@@ -152,9 +152,9 @@ class SyncTest( testbase.TestBase ):
         # execute the code in python for a number of steps
         # having too many steps is actually counterproductive as it falls into a steady state
         steps = 4
-        exec init_text
+        exec (init_text)
         for i in range( steps ):
-            exec py_text in locals()
+            exec (py_text in locals())
         
         # see the full text here
         #print full_text

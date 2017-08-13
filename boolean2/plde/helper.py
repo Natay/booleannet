@@ -1,7 +1,8 @@
 """
 Helper functions
 """
-import csv, StringIO
+import csv
+from io import StringIO
 import string
 from itertools import *
 
@@ -14,7 +15,7 @@ except:
     pass
 """
 
-from defs import *
+from .defs import *
 
 def change(node, indexer):
     "Returns the change for a node"
@@ -58,7 +59,7 @@ def hill_func( node, indexer, par):
     index = indexer[node]
     try:
         text = ' hill( c%d, h=%s, n=%s ) ' % ( index, par[node].h, par[node].n )
-    except Exception, exc:
+    except Exception as exc:
         msg = "error creating hill function for node %s -> %s" % (node, exc)
         raise Exception(msg)
     return text
@@ -71,7 +72,7 @@ def prop_func( node, indexer, par):
     try:
         nconc = conc(node, indexer)
         text = ' prop( r=%s, rc=%s ) - %s ' % ( par[node].r, par[node].rc, nconc )
-    except Exception, exc:
+    except Exception as exc:
         msg = "error creating proportion function for node %s -> %s" % (node, exc)
         raise Exception(msg)
     return text
@@ -132,7 +133,7 @@ def initializer(data, labels=None, **kwds):
         try:
             values = [ data[node][label] for label in labels ]
             return tuple(values) 
-        except KeyError, exc:
+        except KeyError as exc:
             
             if 'default' in kwds:
                 return kwds['default']

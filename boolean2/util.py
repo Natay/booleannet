@@ -75,7 +75,7 @@ def detect_cycles( data ):
     fsize   = len(data)
 
     # maximum size
-    for msize in range(1, fsize/2+1):
+    for msize in range(1, int(fsize/2+1)):
         for index in range(fsize):
             left  = data[index:index+msize]
             right = data[index+msize:index+2*msize]

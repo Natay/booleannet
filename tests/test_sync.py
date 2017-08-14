@@ -81,7 +81,7 @@ class SyncTest( testbase.TestBase ):
         """
 
         # valid nodes
-        nodes  = string.uppercase[:]
+        nodes  = string.ascii_uppercase[:]
         join = testbase.join
 
         #
@@ -114,7 +114,7 @@ class SyncTest( testbase.TestBase ):
             if randint(1, 100) > 30:
                 for i in range(2):
                     half = size/2
-                    left, right = randint(0, half), randint(half, size)
+                    left, right = randint(0, int(half)), randint(int(half), size)
                     targets[left]  = '(' + targets[left]
                     targets[right] = targets[right] + ')'
 
@@ -154,7 +154,7 @@ class SyncTest( testbase.TestBase ):
         steps = 4
         exec (init_text)
         for i in range( steps ):
-            exec (py_text in locals())
+            exec ("py_text in locals()")
         
         # see the full text here
         #print full_text
@@ -170,7 +170,7 @@ class SyncTest( testbase.TestBase ):
         for attr in nodes:
             oldval = locals()[attr]
             newval = getattr(last, attr )
-            #print attr, oldval, newval
+            #print (attr, oldval, newval)
             self.EQ( oldval, newval )
 
 def get_suite():

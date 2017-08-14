@@ -1,9 +1,5 @@
 
 
-PACKAGE_DIR = boolean2
-
-
-
 clean:
 	rm -rf *.egg-info; rm -rf boolean2/*.egg-info
 	rm -rf boolean2/__pycache__; rm -f boolean2/*.pyc

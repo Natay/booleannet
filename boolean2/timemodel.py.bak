@@ -15,7 +15,7 @@ class TimeModel( BoolModel ):
         self.step  = 0
         self.times = [ 0 ]
 
-    def __next__(self):
+    def next(self):
         "Generates the updates based on the next simulation step"
         self.step += 1
         timestep = self.step * self.gcd             
@@ -32,7 +32,7 @@ class TimeModel( BoolModel ):
         while 1:
             
             # skip ahead until something valid
-            value = next(self)
+            value = self.next()
             tstep = value[0]
             rules = value[1:]
             if rules:
@@ -46,11 +46,11 @@ class TimeModel( BoolModel ):
         Iterates over the lines 'steps' times. 
         """
         shuffler = shuffler or self.shuffler
-        for index in range(steps):
+        for index in xrange(steps):
             self.parser.RULE_START_ITERATION( index, self )
             BoolModel.state_update(self)
             lines = shuffler( )
-            list(map( self.local_parse, lines )) 
+            map( self.local_parse, lines ) 
 
 if __name__ == '__main__':
     
@@ -77,8 +77,8 @@ if __name__ == '__main__':
     c = count(0)
     model.iterate( steps=12 )
     for state in model.states:
-        t = next(c) * 5
+        t = c.next() * 5
         tstamp = 'T=%d ' % t
-        data = [ tstamp ] + list(map(int, (state.A, state.B, state.C, state.D)))
-        data = list(map(str, data))
-        print(('\t'.join(data)))
+        data = [ tstamp ] + map(int, (state.A, state.B, state.C, state.D))
+        data = map(str, data)
+        print ('\t'.join(data))

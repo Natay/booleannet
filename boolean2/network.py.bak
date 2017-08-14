@@ -80,7 +80,7 @@ class TransGraph(object):
         "Adds states to the transition"
     
         # generating the fingerprints and sto
-        times = times or list(range(len(states)))
+        times = times or range(len(states))
         fprints = []
         for state in states:
             if self.verbose:
@@ -106,19 +106,19 @@ class TransGraph(object):
         self.fp.write( '*** node values ***\n' )
 
         # writes the mapping
-        first = list(self.store.values())[0]
-        header = [ 'state' ] + list(first.keys())
+        first = self.store.values()[0]
+        header = [ 'state' ] + first.keys()
         self.fp.write( util.join(header) )
         
         for fprint, state in sorted( self.store.items() ):
-            line = [ fprint ]  + list(map(int, list(state.values()) ))
+            line = [ fprint ]  + map(int, state.values() )
             self.fp.write( util.join(line) )
 
 def test():
     """
     Main testrunnner
     """
-    from . import boolmodel
+    import boolmodel
     
     text = """
     A = True

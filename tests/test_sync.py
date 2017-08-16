@@ -218,10 +218,10 @@ class SyncTest( testbase.TestBase ):
                  (text, nodes, '')
                 ]
 
-        CURRENT_TEST = tests[-2]
+        CURRENT_TEST = tests[3]
         nodes = CURRENT_TEST[1]
         
-        # Update local() namespace with correct nodes
+        # Update local() namespace with correct node states
         exec (CURRENT_TEST[2])
 
         print (CURRENT_TEST[0])

@@ -1,4 +1,13 @@
-A=False
+> make test
+python tests/test_all.py 
+test_cycle_detection (test_sync.SyncTest)
+Testing cycle detection ... ok
+test_initializer (test_sync.SyncTest)
+Testing initializer ... ok
+test_modeline (test_sync.SyncTest)
+Basic operation ... ok
+test_random_rules (test_sync.SyncTest)
+Testing rules (stress test) ... A=False
 B=True
 C=True
 D=False
@@ -50,3 +59,24 @@ Z=False
 1: X* = not ((J) or not G)
 1: Y* = (H and (I) or C)
 1: Z* = not B or L and not H
+
+
+State: A=False, B=False, C=False, D=True, E=False, F=False, G=True, H=True, I=True, J=False, K=True, L=True, M=False, N=False, O=False, P=True, Q=True, R=True, S=True, T=True, U=True, V=True, W=False, X=False, Y=False, Z=True
+Node oldval newval
+A False False
+B True False
+FAIL
+
+======================================================================
+FAIL: test_random_rules (test_sync.SyncTest)
+Testing rules (stress test)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/natay/Desktop/booleannet/tests/test_sync.py", line 220, in test_random_rules
+    self.EQ( oldval, newval )
+AssertionError: True != False
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.042s
+
+FAILED (failures=1)

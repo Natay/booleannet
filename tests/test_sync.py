@@ -157,7 +157,7 @@ class SyncTest( testbase.TestBase ):
 
             exec (py_text)
         
-        # Store valid rule evaluations to compare boolnet results to
+        # Store python evaluations to compare modeline results
         store = locals()
         valid_evals = {}
 
@@ -167,14 +167,13 @@ class SyncTest( testbase.TestBase ):
 
         bool_text = init_text + bool_text 
         
+        # See full text here
+        #print(bool_text)
         # execute the code with the modeline
         states = testbase.get_states(mode='sync', text=bool_text, steps=steps)
         last   = states[-1]
         
         # checks all states for equality with both methods
-        #print('\n')
-        #print('Node', 'Valid', 'Returned')
-
         for attr in nodes:
             valid = valid_evals[attr]
             bool_val = getattr(last, attr )

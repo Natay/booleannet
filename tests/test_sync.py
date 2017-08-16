@@ -147,99 +147,39 @@ class SyncTest( testbase.TestBase ):
         py_text   = join( py_text )
         bool_text = join( bool_text )
         full_text = init_text + py_text
-
+        
         # execute the code in python for a number of steps
         # having too many steps is actually counterproductive as it falls into a steady state
         steps = 4
-        exec (init_text)
+        exec (init_text)    
+ 
         for i in range( steps ):
-            exec ("py_text in locals()")
+
+            exec (py_text)
         
-        # see the full text here
-        #print (full_text)
+        # Store valid rule evaluations to compare boolnet results to
+        store = locals()
+        valid_evals = {}
+
+        for x in store:
+             if x in nodes:
+                valid_evals[x] = store[x]
+
+        bool_text = init_text + bool_text 
         
-        text = init_text + bool_text 
-
-        test="""
-        T = True
-        Y = True
-        T *= not not ((T) and Y)
-        """
-
-        test2 = """
-        B = False
-        E = False
-        J = False
-        Y = False
-        B* = E or not not J or Y
-        """
-
-        test3 = """
-        G = True
-        H = False
-        S = True
-        H* = ((G) or S)
-        """
-
-        test4 = """
-        K = False
-        W = True
-        B = True 
-        B* = not ((K) or not W)
-        """
-        
-        test5 = """
-        K = False
-        W = True
-        B = True 
-        X = True
-        V = False
-        S = True
-        J = True
-        B* = not ((K) or not W)
-        K* = not ((X) or not V)
-        W* = ((S)) and J
-        """
-        test6 = """
-        N = True
-        G = True
-        A = True
-        A* = ((N) and G)
-        """
-
-
-        tests = [
-                 (test, 'TY', 'T = True; Y = True'),
-                 (test2, 'BEJY', 'B = False; E = False; J = False; Y = False'),
-                 (test3, 'GHS', 'G = True; H = False; S = True'),
-                 (test4, 'BWK', 'B = True; W = True; K = False'),
-                 (test5, 'KWBXVSJ', 'B = True; W = True; K = False; X = True;V = False;S = True;J = True'),
-                 (test6, 'ANG', 'N = True; G = True; A = True'), 
-                 (text, nodes, '')
-                ]
-
-        CURRENT_TEST = tests[3]
-        nodes = CURRENT_TEST[1]
-        
-        # Update local() namespace with correct node states
-        exec (CURRENT_TEST[2])
-
-        print (CURRENT_TEST[0])
-
         # execute the code with the modeline
-        states = testbase.get_states(mode='sync', text=CURRENT_TEST[0], steps=steps)
+        states = testbase.get_states(mode='sync', text=bool_text, steps=steps)
         last   = states[-1]
         
         # checks all states for equality with both methods
-        print('\n')
-        print(last)
-        print('Node', 'oldval', 'newval')
-     
+        #print('\n')
+        #print('Node', 'Valid', 'Returned')
+
         for attr in nodes:
-            oldval = locals()[attr]
-            newval = getattr(last, attr )
-            print (attr, oldval, newval)
-            self.EQ( oldval, newval )
+            valid = valid_evals[attr]
+            bool_val = getattr(last, attr )
+            #print (attr, valid, bool_val)
+            self.EQ( valid, bool_val )
 
 def get_suite():
     suite = unittest.TestLoader().loadTestsFromTestCase( SyncTest )

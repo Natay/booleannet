@@ -83,7 +83,6 @@ class SyncTest( testbase.TestBase ):
         # valid nodes
         nodes  = string.ascii_uppercase[:]
         join = testbase.join
-
         #
         # Initializes a bunch of nodes to random values
         #
@@ -107,7 +106,7 @@ class SyncTest( testbase.TestBase ):
         for node in nodes:
             
             # how many nodes per rule
-            targets = [ choice( nodes ) for step in range( randint(2, 8) ) ]
+            targets = [ choice( nodes ) for step in range( randint(2, 3) ) ]
             size = len( targets ) - 1
 
             # insert some parentheses
@@ -148,7 +147,7 @@ class SyncTest( testbase.TestBase ):
         py_text   = join( py_text )
         bool_text = join( bool_text )
         full_text = init_text + py_text
-        
+
         # execute the code in python for a number of steps
         # having too many steps is actually counterproductive as it falls into a steady state
         steps = 4
@@ -157,20 +156,89 @@ class SyncTest( testbase.TestBase ):
             exec ("py_text in locals()")
         
         # see the full text here
-        #print full_text
+        #print (full_text)
         
         text = init_text + bool_text 
 
-        # print text
+        test="""
+        T = True
+        Y = True
+        T *= not not ((T) and Y)
+        """
+
+        test2 = """
+        B = False
+        E = False
+        J = False
+        Y = False
+        B* = E or not not J or Y
+        """
+
+        test3 = """
+        G = True
+        H = False
+        S = True
+        H* = ((G) or S)
+        """
+
+        test4 = """
+        K = False
+        W = True
+        B = True 
+        B* = not ((K) or not W)
+        """
+        
+        test5 = """
+        K = False
+        W = True
+        B = True 
+        X = True
+        V = False
+        S = True
+        J = True
+        B* = not ((K) or not W)
+        K* = not ((X) or not V)
+        W* = ((S)) and J
+        """
+        test6 = """
+        N = True
+        G = True
+        A = True
+        A* = ((N) and G)
+        """
+
+
+        tests = [
+                 (test, 'TY', 'T = True; Y = True'),
+                 (test2, 'BEJY', 'B = False; E = False; J = False; Y = False'),
+                 (test3, 'GHS', 'G = True; H = False; S = True'),
+                 (test4, 'BWK', 'B = True; W = True; K = False'),
+                 (test5, 'KWBXVSJ', 'B = True; W = True; K = False; X = True;V = False;S = True;J = True'),
+                 (test6, 'ANG', 'N = True; G = True; A = True'), 
+                 (text, nodes, '')
+                ]
+
+        CURRENT_TEST = tests[-2]
+        nodes = CURRENT_TEST[1]
+        
+        # Update local() namespace with correct nodes
+        exec (CURRENT_TEST[2])
+
+        print (CURRENT_TEST[0])
+
         # execute the code with the modeline
-        states = testbase.get_states(mode='sync', text=text, steps=steps)
+        states = testbase.get_states(mode='sync', text=CURRENT_TEST[0], steps=steps)
         last   = states[-1]
         
         # checks all states for equality with both methods
+        print('\n')
+        print(last)
+        print('Node', 'oldval', 'newval')
+     
         for attr in nodes:
             oldval = locals()[attr]
             newval = getattr(last, attr )
-            #print (attr, oldval, newval)
+            print (attr, oldval, newval)
             self.EQ( oldval, newval )
 
 def get_suite():

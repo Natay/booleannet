@@ -157,7 +157,7 @@ class SyncTest( testbase.TestBase ):
 
             exec (py_text)
         
-        # Store python evaluations to compare modeline results
+        # Store python evaluations to compare modeline results to
         store = locals()
         valid_evals = {}
 
@@ -169,6 +169,7 @@ class SyncTest( testbase.TestBase ):
         
         # See full text here
         #print(bool_text)
+
         # execute the code with the modeline
         states = testbase.get_states(mode='sync', text=bool_text, steps=steps)
         last   = states[-1]

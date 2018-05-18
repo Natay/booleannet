@@ -1,0 +1,85 @@
+
+# lines starting with the # symbol are comments
+
+#
+# Abscisic Acid signaling model
+#
+# Node initialization below, 
+# ( all other nodes are set to random values in the program)
+
+Closure = SPP1 = GEF1410 = H2OEfflux = Microtubule = Ca2ATPase = RCARs = ROS = RBOH = pHc = Ca2c = NO = CaIM = KEfflux = CIS = Vacidification = OST1 = S1P = GPA1 = PLDa = PA = NIA12 = NOGC1 = cGMP= Actin = InsP3 = CPK213 = MAPK912 = False
+
+ABA = NtSyp121 = ARP23 = ABH1 = ERA1 = GAPC = MRP5 = NAD = NADPH = GCR1 = Nitrite = PC = PtdInsP3 = PtdInsP4 = Malate = HATPase= ABI1 = ABI2 = HAB1 = PP2CA= RCN1 = SCAB1 = Sph = GTP = DAGK = CPK6 = CPK23 = True
+
+
+# Model specification syntax
+#
+# rank: node1 *=  node1 and node2 or node3  ... etc
+#
+# The first number is the rank (all are set to 1 here)
+#
+# 1: A *= A or B
+#
+# means that the new value of A equals the old values 
+# of A and B combined with the operator 'or'
+#
+# model starts below
+
+1: VATPase* = Ca2c
+1: DAG*= PIP2 and PLC
+1: InsP6*= InsP3
+1: Ca2ATPase*=Ca2c
+1: HAB1*=not RCARs and not ROS
+1: MAPK912*=Ca2c or MAPK912
+1: Microtubule*=TCTP or Microtubule
+1: NIA12*=ROS
+1: NOGC1*=NO
+1: PEPC*=not ABA
+1: PI3P5K*= ABA
+1: PIP2*=PtdInsP4
+1: PP2CA*=not RCARs and not ROS
+1: PtdIns35P2*=PI3P5K
+1: RCARs*=ABA
+1: TCTP*=Ca2c
+1: ROP11*=GEF1410
+1: VPpase*=PtdIns35P2 
+1: Vacidification*=VPpase or VATPase or Vacidification
+1: ADPRc*=NitrocGMP
+1: ABI2*=(ROP11 or not RCARs) and not ROS
+1: AtRAC1*=not ABA or ABI1
+1: CPK213*=CPK213 or Ca2c
+1: GHR1*=not ABI2 and ROS
+1: InsP3*=PLC and PIP2
+1: KEV*=Vacidification or Ca2c
+1: PLDa*= GPA1 and Ca2c
+1: QUAC1*=OST1 and Ca2c 
+1: SphK12*=PA or ABA
+1: cADPR*=NAD and ADPRc
+1: cGMP*=NOGC1 and GTP
+1: NitrocGMP*=cGMP and ROS and NO
+1: AnionEM*= SLAC1 or (SLAH3 and QUAC1) 
+1: GPA1*= S1P or not GCR1
+1: CIS*=(InsP3 or InsP6) or cADPR
+1: Ca2c*=(CIS or CaIM) and not Ca2ATPase
+1: KOUT*=(not NO or not ROS or pHc) and Depolar
+1: OST1*= (not ABI1 and not HAB1) or (not PP2CA and not ABI2) or (not ABI1 and not PP2CA) or (not ABI1 and not ABI2) or (not HAB1 and not PP2CA) or (not HAB1 and not ABI2) 
+1: PLDd*=NO or (ROS and GAPC)
+1: SLAH3*= (CPK6 or CPK23) and CPK213 and not ABI1
+1: pHc*= ((OST1 and not ABI2 and not ABI1) or Ca2c) and Vacidification
+1: S1P*=(SphK12 and Sph) and not SPP1 
+1: ABI1*=not PA and (not RCARs or ROP11) and pHc and not ROS
+1: Malate*=PEPC and not ABA and not AnionEM
+1: NO*=(Nitrite and NIA12 and NADPH) 
+1: PA*=PC and (PLDd or PLDa) or DAG and DAGK
+1: ROS*= NADPH and RBOH
+1: Actin*=(PtdInsP4 or PtdInsP3) and not AtRAC1 and ARP23 and SCAB1
+1: Closure*=Microtubule and H2OEfflux  
+1: HATPase*=not pHc and not Ca2c and not ROS
+1: Depolar*=(AnionEM or Ca2c or KEV) and (not HATPase or not KEfflux) 
+1: KEfflux*=KOUT and KEV
+1: PIP21 *= OST1
+1: H2OEfflux*=(AnionEM and PIP21 and KEfflux) and not Malate
+1: RBOH*= pHc and not ABI1 and PtdInsP3 and OST1 and GPA1 and PA and RCN1
+1: CaIM*=(NtSyp121 and GHR1 and MRP5) or not ABH1 or not ERA1 or Actin
+1: SLAC1* = (CPK6 or CPK23 or CPK213) and MAPK912 and OST1 and GHR1 and not ABI1 and not PP2CA and not ABI2 and pHc
+1: PLC*=Ca2c
